@@ -13,6 +13,7 @@
 
 Route::get('/', 'MainController@index');
 
+Route::get('quiz/ajax_index','QuizController@ajax_index');
 Route::resource('/quiz', 'QuizController');
 
 Route::resource('/result', 'ResultController');

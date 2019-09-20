@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 
-class QuizController
+class QuizController extends Controller
 {
 
     private $quizs = [];
@@ -49,25 +49,31 @@ class QuizController
             return redirect('/result?email='.$user_email);
         }
 
-        $number = $request['number'] ?? 0;
-        $answer = $request['answer'] ?? 0;
-
-        $quiz_info = $this->quizs;
-
-        if (!empty($request['number']) && !empty($request['answer'])) {
-
-            $quiz_id = $this->quizs[$number-1]['id'];
-
-            $this->saveCustomerAnswer(auth()->user()->email, $quiz_id, $answer);
-
-        }
-
         $args = [
-            'number' => $number+1,
-            'quiz' => $quiz_info[$number],
+            'number' => 0,
+            'quiz' => $this->quizs[0],
         ];
 
         return view('quiz', $args);
+    }
+
+    public function ajax_index(Request $request)
+    {
+        $number = $request['number'];
+        $answer = $request['answer'];
+
+        $quiz_id = $this->quizs[$number]['id'];
+
+        $this->saveCustomerAnswer(auth()->user()->email, $quiz_id, $answer);
+
+        $next_number = $number+1;
+        $args = [
+            'number' => $next_number,
+            'quiz' => $this->quizs[$next_number],
+        ];
+
+        return view('quiz_sub', $args);
+
     }
 
     public function saveCustomerAnswer($customerInfo, $quiz, $answer)
