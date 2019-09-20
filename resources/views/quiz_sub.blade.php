@@ -1,17 +1,12 @@
-@include('header')
-@include('login')
-<div class="active_quiz">
-    <input type="hidden" name="number" value="<?= $number ?>">
-    <h2><?= $quiz['quiz'] ?></h2>
-    <div class="select">
-        <?php foreach ($quiz['answer'] as $row) { ?>
-            <div class="option">
-                <a href="javascript:;" class="submit" data-answer="<?= $row['id'] ?>"><?= $row['text'] ?></a>
-            </div>
-        <?php } ?>
+<input type="hidden" name="number" value="<?= $number ?>">
+<h2><?= $quiz['quiz'] ?></h2>
+<div class="select">
+    <?php foreach ($quiz['answer'] as $row) { ?>
+    <div class="option">
+        <a href="javascript:;" class="submit" data-answer="<?= $row['id'] ?>"><?= $row['text'] ?></a>
     </div>
+    <?php } ?>
 </div>
-@include('footer')
 
 <script>
     $('.submit').on('click',function (){
